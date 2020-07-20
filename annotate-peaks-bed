@@ -1,0 +1,56 @@
+#! /usr/bin/env python
+# ------------------------------------------------------------
+#
+# annotate MACS2 peaks
+# annotate-peaks -h for usage
+#
+# ------------------------------------------------------------
+
+from lib.ngs import *
+
+# ------------------------------------------------------------
+# Run
+# ------------------------------------------------------------
+def main(input_peaks, output_peaks, annotatation_file, header_sup, useStr=False):
+    '''
+    Annotate the MACS peaks using the annotation file.
+    Annotation file should be provided in UCSC refFlat format. /!\ Caution the FIRST column should be geneName and the TWO LAST columns should be exonStarts and exonEnds.
+    from bed file chr, start, stop, and what do you want
+    '''
+    if useStr == None or useStr == 'False': #Probably because of commandify, when useStr is not set, its value is None and when it is set, its value is a string...
+        useStr = False
+    elif useStr == 'True':
+        useStr = True
+    else:
+		raise ValueError('--useStr should be True or False')
+    RNA_peaks_annotate_frombed(input_peaks, output_peaks, annotatation_file, header_sup, useStr)
+
+#def commandify(f, allowPositionnalArguments = True):
+#    # import inspect
+#    import argparse
+# 
+#    # get function signature
+#    fargs     = f.__code__.co_varnames[:f.__code__.co_argcount]
+#    fname     = f.__code__.co_name
+#    fname     = f.__name__
+#    fhelp     = f.__doc__
+# 
+#    fdefaults = f.__defaults__ or {}
+#    fdefaults = dict(zip(fargs[-len(fdefaults):], fdefaults))
+# 
+#    # add arguments
+#    parser = argparse.ArgumentParser(description = '%s' % (fhelp))
+#    for farg in fargs:
+#        if fdefaults.has_key(farg) or allowPositionnalArguments == False:
+#            parser.add_argument('--%s' % farg, help = '%s' % farg)
+#        else:
+#            parser.add_argument('%s' % farg, help = '%s' % farg)
+# 
+#    # parse args and call function
+#    args   = parser.parse_args()
+#    kwargs = dict(args._get_kwargs())
+#    f(**kwargs)
+
+if __name__ == '__main__':
+    from lib.commandify import *
+    commandify(main, True)
